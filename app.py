@@ -4,13 +4,6 @@ import datetime
 import csv
 import time
 
-# add books to database
-# edit books
-# Detel books
-# search function
-# date cleaning
-
-
 def menu():
     while True:
         print('''
@@ -29,8 +22,6 @@ def menu():
                 \rEnter from 1-5
                 \rPress Enter to try again. ''')    
             
-
-
 def submenu():
     while True:
         print('''
@@ -46,7 +37,6 @@ def submenu():
                 \rPlease choose one of the options above:
                 \rEnter from 1-3
                 \rPress Enter to try again. ''')
-
 
 def clean_date(date_str):
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
@@ -205,7 +195,16 @@ def app():
                 time.sleep(1.5)  
             input('\nPress Enter to return to menu. ')
         elif choice == "4":
-            #book analysis
+            oldest_book = session.query(Book).order_by(Book.published_date).first()
+            newest_book = session.query(Book).order_by(Book.published_date.desc()).first()
+            total_books = session.query(Book).count()
+            python_books = session.query(Book).filter(Book.title.like("%Python%")).count()
+            print(f'''\n**** Book Analysis ****
+                    \rOldest Book: {oldest_book}
+                    \rNewest Book: {newest_book}
+                    \rTotal Books: {total_books}
+                    \rNumber of Python Books: {python_books}''')
+            input('\nPress enter to return to main menu')
             pass
         else:
             print("GOODBYE")
@@ -215,8 +214,5 @@ if __name__ == "__main__":
     Base.metadata.create_all(engine)
     add_csv()
     app()
-    
-    
-    for book in session.query(Book):
-        print(book)
+
     
